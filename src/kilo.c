@@ -1,15 +1,11 @@
+#include "terminal.h"
+
 #include <stdlib.h>
+#include <ctype.h>
+#include <stdio.h>
 #include <unistd.h>
-#include <termios.h>
 
-void enableRawMode()
-{
-	struct termios raw;
-
-	tcgetattr(STDIN_FILENO, &raw);
-	raw.c_lflag &= ~(ECHO);
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
-}
+#define EXIT_CHAR 'Q'
 
 int main(void)
 {
@@ -17,10 +13,15 @@ int main(void)
 
 	char c;
 	while (read(STDIN_FILENO, &c, sizeof(char)) == 1) {
-		if (c == 'q') {
-			break;
+		if (c == EXIT_CHAR) {
+			return EXIT_SUCCESS;
 		}
-	}
 
-	return EXIT_SUCCESS;
+		if (iscntrl(c)) {
+			printf("[ iscntrl ]: %d\n", c);
+			continue;
+		}
+
+		printf("[ ascii ]: %d ('%c')\n", c, c);
+	}
 }

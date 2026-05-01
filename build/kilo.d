@@ -1,1 +1,1 @@
-build/kilo.o: src/kilo.c
+build/kilo.o: src/kilo.c src/terminal.h
