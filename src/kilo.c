@@ -18,10 +18,10 @@ int main(void)
 		}
 
 		if (iscntrl(c)) {
-			printf("[ iscntrl ]: %d\n", c);
+			printf("[ cntrl ]: %d\r\n", c);
 			continue;
 		}
 
-		printf("[ ascii ]: %d ('%c')\n", c, c);
+		printf("[ ascii ]: %d ('%c')\r\n", c, c);
 	}
 }
