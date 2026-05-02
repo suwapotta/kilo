@@ -1,7 +1,7 @@
 #include "terminal.h"
 #include "utils.h"
 
-#include <complex.h>
+#include <errno.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <termios.h>
@@ -45,4 +45,18 @@ void enableRawMode(void)
 	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw) == -1) {
 		die("tcsetattr");
 	}
+}
+
+char editorReadKey(void)
+{
+	int nread;
+	char c;
+
+	while ((nread = read(STDIN_FILENO, &c, sizeof(char))) != 1) {
+		if (nread == -1 && errno != EAGAIN) {
+			die("read");
+		}
+	}
+
+	return c;
 }
