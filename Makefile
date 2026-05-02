@@ -7,7 +7,7 @@ C_FLAGS=-MMD -Wall -Wextra -Wshadow
 SRC = $(wildcard src/*.c)
 OBJ = $(patsubst src/%.c, build/%.o, $(SRC))
 DEP = $(OBJ:%.o=%.d)
-EXE = build/main
+EXE = build/kilo
 
 all: $(EXE)
 

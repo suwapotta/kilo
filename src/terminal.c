@@ -1,4 +1,5 @@
 #include "terminal.h"
+#include "utils.h"
 
 #include <complex.h>
 #include <stdlib.h>
@@ -9,7 +10,9 @@ static struct termios orig_termios;
 
 void disableRawMode(void)
 {
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_termios);
+	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_termios) == -1) {
+		die("tcgetattr");
+	}
 }
 
 void enableRawMode(void)
@@ -29,10 +32,17 @@ void enableRawMode(void)
    *     ICANON                          Canonical mode
    *     ISIG                            Ctrl-C/Z
    *     IEXTEN                          Ctrl-V
+   *
+   *  3. Others: misc
    */
 	raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
 	raw.c_oflag &= ~(OPOST);
 	raw.c_cflag &= ~(CS8);
 	raw.c_lflag &= ~(ECHO | ICANON | ISIG | IEXTEN);
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
+	raw.c_cc[VMIN] = 0; // byte
+	raw.c_cc[VTIME] = 1; // ms
+
+	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw) == -1) {
+		die("tcsetattr");
+	}
 }
