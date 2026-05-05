@@ -1,7 +1,9 @@
 #ifndef OUTPUT
 #define OUTPUT
 
-void editorDrawRows(void);
+#include "appendBuffer.h"
+
+void editorDrawRows(struct abuf *ab);
 void editorRefreshScreen(void);
 
 #endif // !OUTPUT
