@@ -1,8 +1,12 @@
 #include "utils.h"
+#include "terminal.h"
+#include "data.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+extern struct editorConfig E;
 
 void die(const char *s)
 {
@@ -11,4 +15,11 @@ void die(const char *s)
 
 	perror(s);
 	exit(1);
+}
+
+void initEditor(void)
+{
+	if (getWindowSize(&E.screenRows, &E.screenCols) == -1) {
+		die("getWindowSize");
+	}
 }
