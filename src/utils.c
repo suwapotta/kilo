@@ -19,8 +19,8 @@ void die(const char *s)
 
 void initEditor(void)
 {
-	E.cx = 2;
-	E.cy = 13;
+	E.cx = 0;
+	E.cy = 0;
 
 	if (getWindowSize(&E.screenRows, &E.screenCols) == -1) {
 		die("getWindowSize");

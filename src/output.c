@@ -1,6 +1,7 @@
 #include "data.h"
 #include "appendBuffer.h"
 #include "output.h"
+#include "defines.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -23,7 +24,7 @@ extern struct editorConfig E;
 void editorDrawRowContent(struct abuf *ab, int row)
 {
 	if (row != E.screenRows * 2 / 3) {
-		abAppend(ab, "~", 1);
+		abAppend(ab, "~", 2);
 		return;
 	}
 
@@ -64,16 +65,20 @@ void editorRefreshScreen(void)
 {
 	struct abuf ab = ABUF_INIT;
 
+	// Clear line
 	abAppend(&ab, "\x1b[?25l", 6);
 	abAppend(&ab, "\x1b[H", 3);
 
 	editorDrawRows(&ab);
 
+	// Navigation
 	char buf[32];
 	snprintf(buf, sizeof(buf), "\x1b[%d;%dH", E.cy + 1, E.cx + 1);
 	abAppend(&ab, buf, strlen(buf));
 
-	abAppend(&ab, "\x1b[?25h", 6); // Show cursor
+	// Cursor
+	abAppend(&ab, "\x1b[?25h", 6);
+	abAppend(&ab, "\x1b[1 q", 5);
 
 	write(STDOUT_FILENO, ab.b, ab.len);
 	abFree(&ab);

@@ -1,25 +1,42 @@
 #include "input.h"
 #include "terminal.h"
 #include "data.h"
+#include "defines.h"
 
 #include <stdlib.h>
 #include <unistd.h>
 
 extern struct editorConfig E;
 
-void editorMoveCursor(char key)
+void editorMoveCursor(int key)
 {
 	switch (key) {
-	case 'h':
+	case ARROW_LEFT:
+		if (E.cx == 0) {
+			break;
+		}
+
 		E.cx--;
 		break;
-	case 'j':
+	case ARROW_DOWN:
+		if (E.cy + 1 == E.screenRows) {
+			break;
+		}
+
 		E.cy++;
 		break;
-	case 'k':
+	case ARROW_UP:
+		if (E.cy == 0) {
+			break;
+		}
+
 		E.cy--;
 		break;
-	case 'l':
+	case ARROW_RIGHT:
+		if (E.cx + 1 == E.screenCols) {
+			break;
+		}
+
 		E.cx++;
 		break;
 	}
@@ -27,7 +44,7 @@ void editorMoveCursor(char key)
 
 void editorProcessKeypress(void)
 {
-	char c = editorReadKey();
+	int c = editorReadKey();
 
 	switch (c) {
 	case CTRL_KEY('q'):
@@ -37,10 +54,10 @@ void editorProcessKeypress(void)
 		exit(0);
 		break;
 
-	case 'h':
-	case 'j':
-	case 'k':
-	case 'l':
+	case ARROW_UP:
+	case ARROW_DOWN:
+	case ARROW_LEFT:
+	case ARROW_RIGHT:
 		editorMoveCursor(c);
 		break;
 	}
