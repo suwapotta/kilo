@@ -23,7 +23,17 @@ extern struct editorConfig E;
 
 void editorDrawRowContent(struct abuf *ab, int row)
 {
-	if (row != E.screenRows * 2 / 3) {
+	if (row < E.numrows) {
+		int len = E.row.size;
+		if (len > E.screenCols) {
+			len = E.screenCols;
+		}
+
+		abAppend(ab, E.row.chars, len);
+		return;
+	}
+
+	if (E.numrows != 0 || row != E.screenRows * 2 / 3) {
 		abAppend(ab, "~", 2);
 		return;
 	}
