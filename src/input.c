@@ -54,6 +54,21 @@ void editorProcessKeypress(void)
 		exit(0);
 		break;
 
+	case HOME_KEY:
+		E.cx = 0;
+		break;
+
+	case END_KEY:
+		E.cx = E.screenCols - 1;
+		break;
+
+	case PAGE_UP:
+	case PAGE_DOWN: {
+		int times = E.screenRows;
+		while (times--) {
+			editorMoveCursor(c == PAGE_UP ? ARROW_UP : ARROW_DOWN);
+		}
+	} break;
 	case ARROW_UP:
 	case ARROW_DOWN:
 	case ARROW_LEFT:

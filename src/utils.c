@@ -21,6 +21,7 @@ void initEditor(void)
 {
 	E.cx = 0;
 	E.cy = 0;
+	E.numrows = 0;
 
 	if (getWindowSize(&E.screenRows, &E.screenCols) == -1) {
 		die("getWindowSize");
